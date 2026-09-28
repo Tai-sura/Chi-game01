@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#dfe8ef" />
+    <title>記敘與唐詩 · 學習射擊</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <!-- 封面 -->
+      <section class="screen active" data-screen="home">
+        <div class="hero hero-art">
+          <div class="top-bar">
+            <button type="button" class="secondary sound-btn" data-sound-toggle>🔊 音效開</button>
+          </div>
+          <h1 class="brand" id="brandTitle">記敘與唐詩 · 學習射擊</h1>
+          <p class="subtitle" id="brandSub">人稱 · 記敘方法 · 唐詩停頓</p>
+        </div>
+        <div class="panel">
+          <p class="muted" style="margin-top: 0; text-align: center; line-height: 1.6">
+            擊落正確答案與詩句停頓，溫習記敘知識與兩首唐詩。<br />
+            支援鍵盤滑鼠與手機觸控 · 五關全部開放。
+          </p>
+          <div class="btn-row" style="margin-top: 1rem">
+            <button id="btnToMode" class="accent">開始學習</button>
+            <button id="btnHow" class="secondary">操作說明</button>
+            <button id="btnStudy" class="secondary">學習卡</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 模式 -->
+      <section class="screen" data-screen="mode">
+        <h2 class="brand" style="font-size: 1.6rem; text-align: center">選擇模式</h2>
+        <div class="mode-cards">
+          <div class="mode-card" data-mode="practice" role="button" tabindex="0">
+            <h3>練習模式</h3>
+            <p>無限生命，答錯會顯示講解，適合第一次學習與溫習。</p>
+          </div>
+          <div class="mode-card" data-mode="challenge" role="button" tabindex="0">
+            <h3>挑戰模式</h3>
+            <p>五顆心，答錯扣命；命盡結束。適合檢測熟悉程度。</p>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="secondary" data-back="home">返回</button>
+          <button id="btnToLevels" class="accent">選擇關卡</button>
+        </div>
+      </section>
+
+      <!-- 關卡 -->
+      <section class="screen" data-screen="levels">
+        <div class="top-bar">
+          <h2 class="brand" style="font-size: 1.6rem; margin: 0">關卡</h2>
+          <button type="button" class="secondary sound-btn" data-sound-toggle>🔊 音效開</button>
+        </div>
+        <p class="muted" style="text-align: center; margin: 0">五關全部開放，可自由選關練習。</p>
+        <div class="panel level-list" id="levelList"></div>
+        <div class="btn-row">
+          <button class="secondary" data-back="mode">返回模式</button>
+          <button class="secondary" id="btnStudyFromLevels">學習卡</button>
+        </div>
+      </section>
+
+      <!-- 說明 -->
+      <section class="screen" data-screen="how">
+        <h2 class="brand" style="font-size: 1.6rem; text-align: center">操作說明</h2>
+        <div class="panel" style="line-height: 1.7">
+          <p><strong>電腦：</strong>滑鼠移動並點擊靶子射擊；或 ← →／A D 移動，空白鍵射擊最近靶。</p>
+          <p><strong>手機／平板：</strong>點擊靶子即可射擊；按住拖曳可移動角色。</p>
+          <p><strong>選擇題：</strong>射中正確選項。</p>
+          <p><strong>順序題：</strong>依正確順序依次擊落牌子。</p>
+          <p><strong>停頓題：</strong>依詩句「／」停頓，依次擊落下一個正確詞組。</p>
+          <p class="muted">Esc 或「暫停」可暫停遊戲。可用「音效開／關」切換聲音。</p>
+        </div>
+        <div class="btn-row">
+          <button class="secondary" data-back="home">返回</button>
+        </div>
+      </section>
+
+      <!-- 學習卡 -->
+      <section class="screen" data-screen="study">
+        <h2 class="brand" style="font-size: 1.6rem; text-align: center">學習卡</h2>
+        <div class="panel study-grid" id="studyBody"></div>
+        <div class="btn-row">
+          <button class="secondary" data-back="home">返回封面</button>
+          <button class="secondary" data-back="levels">返回關卡</button>
+        </div>
+      </section>
+
+      <!-- 遊戲中 -->
+      <section class="screen" data-screen="game">
+        <div class="hud">
+          <div class="left">
+            <span id="hudLevel"></span>
+            <span class="hearts" id="hudHearts"></span>
+          </div>
+          <div class="hud-actions">
+            <button type="button" class="secondary sound-btn" data-sound-toggle style="padding: 0.4rem 0.75rem">🔊</button>
+            <button id="btnPause" class="secondary" style="padding: 0.4rem 0.9rem">暫停</button>
+          </div>
+          <div class="right">
+            <span id="hudScore">分數 0</span>
+            <span id="hudCombo"></span>
+          </div>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="panel prompt-bar" id="promptText">題目</div>
+        <div class="game-stage">
+          <canvas id="gameCanvas"></canvas>
+          <div class="toast" id="toast"></div>
+          <div class="overlay-pause" id="pauseOverlay">
+            <div class="panel" style="text-align: center">
+              <h3 style="margin-top: 0; font-family: var(--font-display)">已暫停</h3>
+              <div class="btn-row">
+                <button id="btnResume" class="accent">繼續</button>
+                <button id="btnQuitLevel" class="secondary">退出本關</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="controls-hint">獵人點靶射箭 · 鍵盤 ←→ 移動，空白鍵對準最近靶開弓</p>
+      </section>
+
+      <!-- 結算 -->
+      <section class="screen" data-screen="result">
+        <h2 class="brand" style="font-size: 1.6rem; text-align: center" id="resultTitle">本關完成！</h2>
+        <div class="panel" style="text-align: center">
+          <p class="muted" style="margin: 0">本關分數</p>
+          <p class="result-score" id="resultScore">0</p>
+          <p class="muted" id="resultDetail"></p>
+        </div>
+        <div class="panel">
+          <h3 style="margin: 0 0 0.4rem; font-family: var(--font-display)">錯題回顧</h3>
+          <ul class="wrong-list" id="wrongList"></ul>
+        </div>
+        <div class="btn-row">
+          <button id="btnResultRetry" class="secondary">再打本關</button>
+          <button id="btnResultNext" class="accent">下一關</button>
+          <button id="btnResultLevels" class="secondary">關卡列表</button>
+        </div>
+      </section>
+    </div>
+
+    <script src="sfx.js"></script>
+    <script src="data.js"></script>
+    <script src="game.js"></script>
+  </body>
+</html>

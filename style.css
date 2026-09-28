@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=ZCOOL+XiaoWei&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&display=swap");
 
 :root {
   --ink: #1a2332;
@@ -14,8 +14,9 @@
   --card: rgba(255, 255, 255, 0.72);
   --shadow: 0 12px 40px rgba(26, 35, 50, 0.12);
   --radius: 14px;
-  --font-display: "ZCOOL XiaoWei", "Noto Serif TC", serif;
-  --font-body: "Noto Serif TC", "Songti TC", serif;
+  /* 不使用 ZCOOL XiaoWei：該字型「回」字描邊有缺陷，會顯示成黑塊 */
+  --font-display: "Noto Serif TC", "Source Han Serif TC", "Songti TC", "PingFang TC", "Microsoft JhengHei", serif;
+  --font-body: "Noto Serif TC", "Source Han Serif TC", "Songti TC", "PingFang TC", "Microsoft JhengHei", serif;
   --safe-t: env(safe-area-inset-top, 0px);
   --safe-r: env(safe-area-inset-right, 0px);
   --safe-b: env(safe-area-inset-bottom, 0px);
@@ -96,10 +97,16 @@ body {
 
 .brand {
   font-family: var(--font-display);
+  font-weight: 700;
   font-size: clamp(1.45rem, 4.8vw, 2.6rem);
   letter-spacing: 0.06em;
   margin: 0;
   line-height: 1.25;
+}
+
+.ui-heading {
+  font-family: var(--font-display);
+  font-weight: 700;
 }
 
 .subtitle {

@@ -2,10 +2,19 @@
 <html lang="zh-Hant">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5"
+    />
     <meta name="theme-color" content="#dfe8ef" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <title>記敘與唐詩 · 學習射擊</title>
     <link rel="stylesheet" href="style.css" />
+    <style>
+      /* 首屏防閃：在 CSS 載入前先鎖住高度 */
+      html, body { min-height: 100%; min-height: 100dvh; }
+    </style>
   </head>
   <body>
     <div id="app">

@@ -206,6 +206,8 @@
     if (id !== "game") {
       state.running = false;
       cancelAnimationFrame(raf);
+    } else {
+      requestAnimationFrame(() => resizeCanvas());
     }
   }
 
@@ -319,17 +321,18 @@
     const n = labels.length;
     labels.forEach((item, i) => {
       const col = (i + 0.5) / n;
+      const maxW = n >= 4 ? 0.22 : n === 3 ? 0.26 : 0.3;
       state.targets.push({
         id: Math.random().toString(36).slice(2),
         text: item.text,
         correct: item.correct,
         kind: item.kind,
         orderValue: item.orderValue,
-        x: 0.12 + col * 0.76 + (Math.random() * 0.04 - 0.02),
+        x: 0.12 + col * 0.76 + (Math.random() * 0.03 - 0.015),
         y: 0.18 + Math.random() * 0.08,
         vx: (Math.random() * 0.04 + 0.02) * (Math.random() < 0.5 ? -1 : 1),
         vy: 0.03 + Math.random() * 0.025,
-        w: Math.min(0.28, 0.1 + item.text.length * 0.028),
+        w: Math.min(maxW, 0.1 + item.text.length * 0.026),
         h: 0.09,
         hit: false,
         bob: Math.random() * Math.PI * 2,
@@ -596,12 +599,47 @@
 
   function resizeCanvas() {
     const canvas = el.canvas;
-    const rect = canvas.parentElement.getBoundingClientRect();
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.floor(rect.width * dpr);
-    canvas.height = Math.floor(rect.height * dpr);
+    if (!canvas || !canvas.parentElement) return;
+    const stage = canvas.parentElement;
+    const rect = stage.getBoundingClientRect();
+    const cssW = Math.max(1, Math.floor(rect.width));
+    const cssH = Math.max(1, Math.floor(rect.height));
+    dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+    const needW = Math.floor(cssW * dpr);
+    const needH = Math.floor(cssH * dpr);
+    if (canvas.width !== needW || canvas.height !== needH) {
+      canvas.width = needW;
+      canvas.height = needH;
+    }
+    canvas.style.width = cssW + "px";
+    canvas.style.height = cssH + "px";
     ctx = canvas.getContext("2d");
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function bindViewportResize() {
+    const stage = el.canvas && el.canvas.parentElement;
+    if (stage && typeof ResizeObserver !== "undefined") {
+      const ro = new ResizeObserver(() => {
+        if (state.running || el.screens.game?.classList.contains("active")) {
+          resizeCanvas();
+        }
+      });
+      ro.observe(stage);
+    }
+    const onResize = () => {
+      if (state.running || el.screens.game?.classList.contains("active")) {
+        resizeCanvas();
+      }
+    };
+    window.addEventListener("resize", onResize);
+    window.addEventListener("orientationchange", () => {
+      setTimeout(onResize, 180);
+      setTimeout(onResize, 450);
+    });
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", onResize);
+    }
   }
 
   function W() {
@@ -814,7 +852,7 @@
     ctx.fill();
 
     if (art.player) {
-      const size = Math.min(w * 0.28, 168) * pull;
+      const size = Math.min(Math.max(w * 0.26, 72), Math.min(h * 0.28, 176)) * pull;
       ctx.save();
       ctx.translate(px, py + 10);
       const lean = Math.max(-0.4, Math.min(0.4, state.player.aim + Math.PI / 2));
@@ -986,10 +1024,6 @@
       else go("levels");
     });
 
-    window.addEventListener("resize", () => {
-      if (state.running) resizeCanvas();
-    });
-
     window.addEventListener("keydown", (e) => {
       state.keys[e.key] = true;
       if (!state.running || state.paused) return;
@@ -1051,6 +1085,7 @@
     loadSave();
     loadArt();
     bind();
+    bindViewportResize();
     syncSoundBtn();
     document.getElementById("brandTitle").textContent = D().title;
     document.getElementById("brandSub").textContent = D().subtitle;

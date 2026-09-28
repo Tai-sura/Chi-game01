@@ -791,7 +791,7 @@
       ctx.fill();
       ctx.stroke();
       ctx.fillStyle = "#1a2332";
-      ctx.font = `600 ${Math.max(14, Math.min(20, tw / (t.text.length * 0.7)))}px "Noto Serif TC", serif`;
+      ctx.font = `600 ${Math.max(14, Math.min(20, tw / (t.text.length * 0.7)))}px "Microsoft JhengHei","PingFang TC","Noto Sans TC",sans-serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText(t.text, t.x * w, y + th / 2);

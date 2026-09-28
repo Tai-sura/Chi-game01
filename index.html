@@ -10,10 +10,17 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
     <title>記敘與唐詩 · 學習射擊</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=20260928c" />
     <style>
-      /* 首屏防閃：在 CSS 載入前先鎖住高度 */
-      html, body { min-height: 100%; min-height: 100dvh; }
+      /* 首屏防閃：在 CSS 載入前先鎖住高度；系統字避免「回」變黑塊 */
+      html, body {
+        min-height: 100%;
+        min-height: 100dvh;
+        font-family: "Microsoft JhengHei UI", "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif;
+      }
+      .glyph-safe {
+        font-family: "Microsoft JhengHei UI", "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif !important;
+      }
     </style>
   </head>
   <body>
@@ -54,7 +61,7 @@
           </div>
         </div>
         <div class="btn-row">
-          <button class="secondary" data-back="home">返回</button>
+          <button class="secondary" data-back="home"><span class="glyph-safe">回</span>返</button>
           <button id="btnToLevels" class="accent">選擇關卡</button>
         </div>
       </section>
@@ -68,7 +75,7 @@
         <p class="muted" style="text-align: center; margin: 0">五關全部開放，可自由選關練習。</p>
         <div class="panel level-list" id="levelList"></div>
         <div class="btn-row">
-          <button class="secondary" data-back="mode">返回模式</button>
+          <button class="secondary" data-back="mode"><span class="glyph-safe">回</span>返模式</button>
           <button class="secondary" id="btnStudyFromLevels">學習卡</button>
         </div>
       </section>
@@ -85,7 +92,7 @@
           <p class="muted">Esc 或「暫停」可暫停遊戲。可用「音效開／關」切換聲音。</p>
         </div>
         <div class="btn-row">
-          <button class="secondary" data-back="home">返回</button>
+          <button class="secondary" data-back="home"><span class="glyph-safe">回</span>返</button>
         </div>
       </section>
 
@@ -94,8 +101,8 @@
         <h2 class="brand" style="font-size: 1.6rem; text-align: center">學習卡</h2>
         <div class="panel study-grid" id="studyBody"></div>
         <div class="btn-row">
-          <button class="secondary" data-back="home">返回封面</button>
-          <button class="secondary" data-back="levels">返回關卡</button>
+          <button class="secondary" data-back="home"><span class="glyph-safe">回</span>返封面</button>
+          <button class="secondary" data-back="levels"><span class="glyph-safe">回</span>返關卡</button>
         </div>
       </section>
 
@@ -142,7 +149,7 @@
           <p class="muted" id="resultDetail"></p>
         </div>
         <div class="panel">
-          <h3 class="ui-heading" style="margin: 0 0 0.4rem">錯題回顧</h3>
+          <h3 class="ui-heading" style="margin: 0 0 0.4rem">錯題<span class="glyph-safe">回</span>顧</h3>
           <ul class="wrong-list" id="wrongList"></ul>
         </div>
         <div class="btn-row">
@@ -153,8 +160,8 @@
       </section>
     </div>
 
-    <script src="sfx.js"></script>
-    <script src="data.js"></script>
-    <script src="game.js"></script>
+    <script src="sfx.js?v=20260928c"></script>
+    <script src="data.js?v=20260928c"></script>
+    <script src="game.js?v=20260928c"></script>
   </body>
 </html>
